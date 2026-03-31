@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Leikkipuistotehtävät</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        touch-action: manipulation;
+        overscroll-behavior: none;
+    }
+
+    #taskBox {
+        font-size: 22px;
+        margin: 30px auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        background: #f0f0f0;
+        border-radius: 12px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body ontouchmove="event.preventDefault()">
+
+<h1>Leikkipuistotehtävät</h1>
+
+<div id="taskBox">Paina “Arvo tehtävä”</div>
+
+<button class="btn" onclick="newTask()">Arvo tehtävä</button>
+
+<div id="done" style="display:none;">
+    <h2>Tehtävä suoritettu!</h2>
+    <button class="btn" onclick="completeTask()">Jatka</button>
+</div>
+
+<script>
+const tasks = [
+    "Keinu 10 kertaa",
+    "Liuku liukumäestä ja huuda PEURUNKA",
+    "Etsi punainen esine ja kosketa sitä",
+    "Kiipeä telineeseen ja kosketa korkeinta kohtaa",
+    "Pyöri ympäri 5 kertaa",
+    "Keksi oma leikkipuistotanssi",
+    "Kävele tasapainoa pitkin 10 askelta",
+    "Etsi jotain sinistä ja näytä se muille",
+    "Hyppää tasajalkaa 15 kertaa",
+    "Keksi oma eläinääni ja esitä se"
+];
+
+function newTask() {
+    const random = tasks[Math.floor(Math.random() * tasks.length)];
+    document.getElementById("taskBox").textContent = random;
+    document.getElementById("done").style.display = "block";
+}
+
+function completeTask() {
+    let score = Number(localStorage.getItem("score") || 0);
+    localStorage.setItem("score", score + 1);
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

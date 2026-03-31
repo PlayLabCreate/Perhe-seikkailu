@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Hassu poseeraus</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        touch-action: manipulation;
+        overscroll-behavior: none;
+    }
+
+    #taskBox {
+        font-size: 22px;
+        margin: 30px auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        background: #f0f0f0;
+        border-radius: 12px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body ontouchmove="event.preventDefault()">
+
+<h1>Hassu poseeraus</h1>
+
+<div id="taskBox">Paina “Arvo poseeraus”</div>
+
+<button class="btn" onclick="newPose()">Arvo poseeraus</button>
+
+<div id="done" style="display:none;">
+    <h2>Tehtävä suoritettu!</h2>
+    <button class="btn" onclick="completeTask()">Jatka</button>
+</div>
+
+<script>
+const poses = [
+    "Tehkää hirven sarvet käsillä",
+    "Hypätkää kaikki samaan aikaan",
+    "Olkaa kuin jäätyneet patsaat 5 sekuntia",
+    "Tehkää iso ryhmähalaus",
+    "Matkikaa karhua murisemalla",
+    "Olkaa kuin robotteja 10 sekuntia",
+    "Kuvitelkaa että tuulee kovaa ja heilukaa",
+    "Tehkää kaikki mahdollisimman hassu ilme",
+    "Olkaa kuin supersankarit – sankariasento!",
+    "Kuvitelkaa että lattia on kuumaa laavaa"
+];
+
+function newPose() {
+    const random = poses[Math.floor(Math.random() * poses.length)];
+    document.getElementById("taskBox").textContent = random;
+    document.getElementById("done").style.display = "block";
+}
+
+function completeTask() {
+    let score = Number(localStorage.getItem("score") || 0);
+    localStorage.setItem("score", score + 1);
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

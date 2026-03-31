@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+
+<!-- Mobiilioptimoitu viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Peurunka Perheseikkailu – Aloitus</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        touch-action: manipulation;
+        overscroll-behavior: none;
+        padding: 20px;
+        text-align: center;
+    }
+
+    #box {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 450px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+
+    input {
+        width: 90%;
+        padding: 15px;
+        font-size: 20px;
+        border-radius: 10px;
+        border: 2px solid #ccc;
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+
+<!-- Estetään vieritys, mutta sallitaan kirjoittaminen input-kenttään -->
+<body ontouchmove="if(event.target.tagName !== 'INPUT') event.preventDefault()">
+
+<img id="logo" src="images/peurunka-logo.png" alt="Peurunka">
+
+<h1>Tervetuloa Perheseikkailuun!</h1>
+
+<div id="box">
+    <p>Syötä perheenne nimi:</p>
+
+    <input id="familyInput" type="text" placeholder="">
+
+    <button class="btn" onclick="startGame()">Aloita peli</button>
+</div>
+
+<script>
+function startGame() {
+    const name = document.getElementById("familyInput").value.trim();
+
+    if (name.length < 2) {
+        alert("Syötä perheen nimi.");
+        return;
+    }
+
+    localStorage.setItem("familyName", name);
+    localStorage.setItem("score", 0);
+
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

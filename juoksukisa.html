@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Juoksukisa</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        touch-action: manipulation;
+        overscroll-behavior: none;
+    }
+
+    #timer {
+        font-size: 48px;
+        margin: 30px 0;
+    }
+</style>
+</head>
+
+<body ontouchmove="event.preventDefault()">
+
+<h1>Juoksukisa</h1>
+
+<p>Juoskaa sovittu matka ja pysäyttäkää aika!</p>
+
+<div id="timer">0.00</div>
+
+<button class="btn" onclick="startTimer()">Aloita</button>
+<button class="btn" onclick="stopTimer()">Stop</button>
+
+<div id="done" style="display:none;">
+    <h2>Tehtävä suoritettu!</h2>
+    <button class="btn" onclick="completeTask()">Jatka</button>
+</div>
+
+<script>
+let startTime = null;
+let interval = null;
+
+function startTimer() {
+    startTime = Date.now();
+    document.getElementById("done").style.display = "none";
+
+    if (interval) clearInterval(interval);
+
+    interval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        document.getElementById("timer").textContent = elapsed.toFixed(2);
+    }, 50);
+}
+
+function stopTimer() {
+    if (!interval) return;
+
+    clearInterval(interval);
+    interval = null;
+
+    document.getElementById("done").style.display = "block";
+}
+
+function completeTask() {
+    let score = Number(localStorage.getItem("score") || 0);
+    localStorage.setItem("score", score + 1);
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

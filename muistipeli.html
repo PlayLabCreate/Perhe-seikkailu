@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Muistipeli</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        touch-action: manipulation;
+        overscroll-behavior: none;
+    }
+
+    #game {
+        width: 320px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .card {
+        width: 100px;
+        height: 100px;
+        perspective: 600px;
+        cursor: pointer;
+    }
+
+    .inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.4s;
+    }
+
+    .flipped {
+        transform: rotateY(180deg);
+    }
+
+    .front, .back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 10px;
+    }
+
+    .front {
+        background: #2d6a4f;
+    }
+
+    .back {
+        background-size: cover;
+        background-position: center;
+        transform: rotateY(180deg);
+    }
+
+    @media (max-width: 400px) {
+        #game {
+            width: 260px;
+        }
+        .card {
+            width: 80px;
+            height: 80px;
+        }
+    }
+</style>
+</head>
+
+<body ontouchmove="event.preventDefault()">
+
+<h1>Muistipeli</h1>
+
+<div id="game"></div>
+
+<div id="done" style="display:none;">
+    <h2>Tehtävä suoritettu!</h2>
+    <button class="btn" onclick="completeTask()">Jatka</button>
+</div>
+
+<script>
+const images = [
+    "images/pala1.jpg",
+    "images/pala2.jpg",
+    "images/pala3.jpg"
+];
+
+let cards = [...images, ...images];
+cards.sort(() => Math.random() - 0.5);
+
+const game = document.getElementById("game");
+
+let flippedCards = [];
+let matched = 0;
+
+cards.forEach(img => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+
+    const inner = document.createElement("div");
+    inner.classList.add("inner");
+    inner.dataset.image = img;
+
+    const front = document.createElement("div");
+    front.classList.add("front");
+
+    const back = document.createElement("div");
+    back.classList.add("back");
+    back.style.backgroundImage = `url(${img})`;
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
+    game.appendChild(card);
+
+    card.addEventListener("click", () => flipCard(inner));
+});
+
+function flipCard(card) {
+    if (card.classList.contains("flipped")) return;
+    if (flippedCards.length === 2) return;
+
+    card.classList.add("flipped");
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+        setTimeout(checkMatch, 600);
+    }
+}
+
+function checkMatch() {
+    const [c1, c2] = flippedCards;
+
+    if (c1.dataset.image === c2.dataset.image) {
+        matched++;
+        if (matched === 3) {
+            document.getElementById("done").style.display = "block";
+        }
+    } else {
+        c1.classList.remove("flipped");
+        c2.classList.remove("flipped");
+    }
+
+    flippedCards = [];
+}
+
+function completeTask() {
+    let score = Number(localStorage.getItem("score") || 0);
+    localStorage.setItem("score", score + 1);
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

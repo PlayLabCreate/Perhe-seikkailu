@@ -1,0 +1,64 @@
+/* Yleinen sivutyyli */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 30px;
+    text-align: center;
+}
+
+/* Otsikot */
+h1 {
+    color: #2d6a4f;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* Kortit ja laatikot */
+.card, #box, #taskBox, #questionBox {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 450px;
+    margin: 20px auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Napit */
+.btn {
+    padding: 15px 25px;
+    font-size: 20px;
+    background: #2d6a4f;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    margin: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background: #24563f;
+}
+
+/* Onnistumisviesti */
+#done {
+    color: #8ac926;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+/* Peurunka-logo */
+#logo {
+    width: 140px;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Peurunka Trivia</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        touch-action: manipulation;
+        overscroll-behavior: none;
+    }
+
+    #questionBox {
+        font-size: 22px;
+        margin: 20px auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 450px;
+        background: #f0f0f0;
+        border-radius: 12px;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .btn-answer {
+        display: block;
+        margin: 10px auto;
+        padding: 15px 25px;
+        font-size: 18px;
+        background: #2d6a4f;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        width: 80%;
+        max-width: 300px;
+    }
+</style>
+</head>
+
+<body ontouchmove="event.preventDefault()">
+
+<h1>Peurunka Trivia</h1>
+
+<div id="questionBox">Aloitetaan!</div>
+<div id="answers"></div>
+
+<div id="done" style="display:none;">
+    <h2 id="resultText"></h2>
+    <button class="btn" onclick="completeTask()">Jatka</button>
+</div>
+
+<script>
+const questions = [
+    { q: "Kuinka monta saunaa Peurungassa on?", a: ["2", "4", "6"], correct: 1 },
+    { q: "Mikä eläin esiintyy Peurungan tarinoissa?", a: ["Hirvi", "Karhu", "Saukko"], correct: 0 },
+    { q: "Kuinka syvä Peurunkajärvi on?", a: ["10 m", "20 m", "30 m"], correct: 1 },
+    { q: "Missä kunnassa Peurunka sijaitsee?", a: ["Laukaa", "Jyväskylä", "Äänekoski"], correct: 0 }
+];
+
+let index = 0;
+let correctAnswers = 0;
+
+function loadQuestion() {
+    const q = questions[index];
+    document.getElementById("questionBox").textContent = q.q;
+
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+
+    q.a.forEach((text, i) => {
+        const btn = document.createElement("button");
+        btn.classList.add("btn-answer");
+        btn.textContent = text;
+        btn.onclick = () => checkAnswer(i);
+        answersDiv.appendChild(btn);
+    });
+}
+
+function checkAnswer(choice) {
+    if (choice === questions[index].correct) {
+        correctAnswers++;
+    }
+
+    index++;
+
+    if (index < questions.length) {
+        loadQuestion();
+    } else {
+        endGame();
+    }
+}
+
+function endGame() {
+    document.getElementById("questionBox").textContent = "";
+    document.getElementById("answers").innerHTML = "";
+    document.getElementById("resultText").textContent =
+        `Sait ${correctAnswers} / ${questions.length} oikein!`;
+    document.getElementById("done").style.display = "block";
+}
+
+function completeTask() {
+    let score = Number(localStorage.getItem("score") || 0);
+    localStorage.setItem("score", score + 1);
+    window.location.href = "index.html";
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>

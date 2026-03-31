@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<title>Peurunka Perheseikkailu – Tehtävät</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    .task {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin: 15px auto;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 20px;
+    }
+
+    .task.done {
+        background: #d8f3dc;
+        color: #2d6a4f;
+        border-left: 8px solid #2d6a4f;
+    }
+
+    .task a {
+        text-decoration: none;
+        color: #2d6a4f;
+        font-weight: 600;
+    }
+
+    .task.done a {
+        pointer-events: none;
+        color: #2d6a4f;
+        opacity: 0.5;
+    }
+
+    #familyName {
+        font-size: 22px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+
+<img id="logo" src="images/peurunka-logo.png" alt="Peurunka">
+
+<h1>Peurunka Perheseikkailu</h1>
+
+<div id="familyName"></div>
+
+<div id="taskList"></div>
+
+<script>
+    // 1) Lue perheen nimi
+    const family = localStorage.getItem("familyName") || "Perhe";
+    document.getElementById("familyName").textContent = "Tervetuloa, " + family + "!";
+
+    // 2) Lue pisteet
+    const score = Number(localStorage.getItem("score") || 0);
+
+    // 3) Jos kaikki tehtävät tehty → diplomiin
+    if (score >= 6) {
+        window.location.href = "loppu.html";
+    }
+
+    // 4) Tehtävälista
+    const tasks = [
+        { id: 1, name: "Palapeli", file: "palapeli.html" },
+        { id: 2, name: "Muistipeli", file: "muistipeli.html" },
+        { id: 3, name: "Hassu poseeraus", file: "poseeraus.html" },
+        { id: 4, name: "Leikkipuistotehtävät", file: "leikkipuisto.html" },
+        { id: 5, name: "Juoksukisa", file: "juoksukisa.html" },
+        { id: 6, name: "Peurunka Trivia", file: "trivia.html" }
+    ];
+
+    // 5) Luo tehtäväkortit
+    const list = document.getElementById("taskList");
+
+    for (let i = 0; i < tasks.length; i++) {
+        const done = i < score; // tehtävä suoritettu jos pisteitä enemmän kuin indeksi
+
+        const div = document.createElement("div");
+        div.classList.add("task");
+        if (done) div.classList.add("done");
+
+        div.innerHTML = `
+            <span>${tasks[i].name}</span>
+            <a href="${done ? '#' : tasks[i].file}">
+                ${done ? "✔" : "Aloita"}
+            </a>
+        `;
+
+        list.appendChild(div);
+    }
+</script>
+
+</body>
+</html>

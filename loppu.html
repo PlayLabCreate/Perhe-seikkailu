@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Peurungan Sankarit – Diplomi</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    body {
+        touch-action: manipulation;
+        overscroll-behavior: none;
+        background: #f7f7f7;
+        padding: 20px;
+    }
+
+    #card {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        width: 95%;
+        max-width: 500px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        position: relative;
+    }
+
+    #logo {
+        width: 120px;
+        margin-bottom: 10px;
+    }
+
+    #trophy {
+        font-size: 80px;
+        margin: 20px 0;
+    }
+
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        top: -10px;
+        animation: fall 3s linear infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(110vh) rotate(360deg);
+        }
+    }
+</style>
+</head>
+
+<body ontouchmove="event.preventDefault()">
+
+<div id="card">
+    <img id="logo" src="images/peurunka-logo.png" alt="Peurunka">
+
+    <h1>Peurungan Sankarit</h1>
+    <h2 id="familyName">Perhe: –</h2>
+
+    <div id="trophy">🏆</div>
+
+    <div id="text">
+        Olette suorittaneet kaikki tehtävät<br>
+        ja ansainneet Peurungan sankaridiplomin!
+    </div>
+
+    <div id="scoreText"></div>
+    <div id="dateText" style="margin-top:10px; font-size:18px;"></div>
+
+    <button class="btn" onclick="downloadDiploma()">Lataa diplomi</button>
+    <a class="btn" href="index.html">Palaa alkuun</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+const familyName = localStorage.getItem("familyName") || "Perhe";
+document.getElementById("familyName").textContent = "Perhe: " + familyName;
+
+const score = localStorage.getItem("score") || 0;
+document.getElementById("scoreText").textContent = "Tehtävät suoritettu: " + score + " / 6";
+
+const today = new Date().toLocaleDateString("fi-FI");
+document.getElementById("dateText").textContent = "Päiväys: " + today;
+
+function createConfetti() {
+    for (let i = 0; i < 40; i++) {
+        const c = document.createElement("div");
+        c.classList.add("confetti");
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = randomColor();
+        c.style.animationDelay = Math.random() + "s";
+        document.body.appendChild(c);
+
+        setTimeout(() => c.remove(), 3000);
+    }
+}
+
+function randomColor() {
+    const colors = ["#ff595e", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+createConfetti();
+setInterval(createConfetti, 2000);
+
+function downloadDiploma() {
+    html2canvas(document.getElementById("card")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "peurunka-diplomi.png";
+        link.href = canvas.toDataURL();
+        link.click();
+    });
+}
+</script>
+
+</body>
+</html>
